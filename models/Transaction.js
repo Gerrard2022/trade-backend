@@ -3,10 +3,18 @@ import mongoose from "mongoose";
 const TransactionSchema = new mongoose.Schema(
   {
     unit: Number,
-    product: {
-      type: [mongoose.Types.ObjectId],
-      ref: 'Product'
-    },
+    products: [
+      {
+        productId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Product', // Reference the 'Product' model
+          required: true,
+        },
+        name: String,
+        price: Number,
+        supply: Number,
+      },
+    ],
   },
   { timestamps: true }
 );

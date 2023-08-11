@@ -1,15 +1,7 @@
 import express from "express";
-import {
-  getProducts,
-  getCustomers,
-  getTransactions,
-  postCustomer,
-  deleteCustomer,
-  updateCustomer,
-  postProducts,
-  deleteProducts,
-  updateProducts,
-} from "../controllers/client.js";
+import { getCustomers, postCustomer,deleteCustomer,updateCustomer,} from "../controllers/customer.js";
+import { postProducts, deleteProducts, updateProducts,  getProducts } from '../controllers/products.js';
+import {   getTransactions, postTransactions, deleteTransactions, updateTransactions } from '../controllers/transactions.js'
 
 const router = express.Router();
 
