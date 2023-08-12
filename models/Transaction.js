@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 
 const TransactionSchema = new mongoose.Schema(
   {
-    unit: Number,
     products: [
       {
         productId: {
@@ -15,6 +14,7 @@ const TransactionSchema = new mongoose.Schema(
         supply: Number,
       },
     ],
+    totalAmount: Number,
   },
   { timestamps: true }
 );

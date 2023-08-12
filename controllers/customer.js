@@ -18,7 +18,6 @@ export const postCustomer = async (req, res) => {
   const{ name, email, country, phoneNumber } = req.body
 
   try {
-
     const customer = await Customer.create({ name, email, country, phoneNumber })
     res.status(200).json(customer)
   } catch (error) {
