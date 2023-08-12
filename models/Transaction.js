@@ -4,7 +4,7 @@ const TransactionSchema = new mongoose.Schema(
   {
     products: [
       {
-        productId: {
+        id: {
           type: mongoose.Schema.Types.ObjectId,
           ref: 'Product', // Reference the 'Product' model
           required: true,

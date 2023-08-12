@@ -13,11 +13,12 @@ export const getTransactions = async (req, res) => {
 
 export const postTransactions = async (req, res) => {
   const { products } = req.body;
-  let totalAmount;
-  let product;
+  let totalAmount = 0;
   try {
-    for (product in products) {
+    for (var product of products) {
+      console.log(product)
       let productFound = await Product.findById(product.id);
+      console.log("productFound", productFound)
       if (!productFound) {
         const error = new Error(
           `Product selected with id ${product.id} does not exist!`
@@ -37,6 +38,7 @@ export const postTransactions = async (req, res) => {
     });
     res.status(201).json(sale);
   } catch (error) {
+    console.log(error)
     res.status(error.status).json({ message: error.message });
   }
 };
