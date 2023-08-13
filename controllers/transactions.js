@@ -15,20 +15,20 @@ export const postTransactions = async (req, res) => {
   const { products } = req.body;
   console.log(products)
   let totalAmount = 0;
-  let newProductsInfo;
   try {
     for (var product of products) {
       console.log(product);
       let productFound = await Product.findById(product.id);
       console.log("productFound", productFound);
-
+      
       if (!productFound) {
         const error = new Error(
           `Product selected with id ${product.id} does not exist!`
-        );
-        error.status = 401;
-        throw error; // Throw the error object directly
-      } else {
+          );
+          error.status = 401;
+          throw error; // Throw the error object directly
+        } else {
+        let newProductsInfo;
         totalAmount = productFound.price * product.unitsTaken;
         productFound.supply -= product.unitsTaken;
         productFound.save();
