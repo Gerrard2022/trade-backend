@@ -23,14 +23,25 @@ export const postTransactions = async (req, res) => {
       console.log("productFound", productFound);
       
       if (!productFound) {
-        const error = new Error(
+        var error = new Error(
           `Product selected with id ${product.id} does not exist!`
           );
-          error.status = 401;
+          error.status = 403;
           throw error; // Throw the error object directly
         } else {
         totalAmount = productFound.price * product.unitsTaken;
-        productFound.supply -= product.unitsTaken;
+        if(productFound.supply == 0){
+        error = new Error('There is no product supply left in the stock');
+        error.status = 403;
+        throw new Error(error);
+        } 
+        if(productFound.supply < product.unitsTaken){
+         error  = new Error('The units wanted are more than what is in stock, reduce the units')
+         error.status = 403;
+         throw new Error(error);
+        }else{
+          productFound.supply -= product.unitsTaken;x
+        }
         productFound.save();
         newProductsInfo.push(productFound);
       }
