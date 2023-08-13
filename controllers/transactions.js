@@ -13,10 +13,11 @@ export const getTransactions = async (req, res) => {
 
 export const postTransactions = async (req, res) => {
   const { products } = req.body;
+  console.log(products)
   let totalAmount = 0;
+  let newProductsInfo;
   try {
     for (var product of products) {
-      console.log(product)
       let productFound = await Product.findById(product.id);
       console.log("productFound", productFound)
       if (!productFound) {
@@ -29,6 +30,7 @@ export const postTransactions = async (req, res) => {
         totalAmount += productFound.price;
         productFound.supply -= product.unitsTaken;
         productFound.save();
+        newProductsInfo.push(productFound);
       }
     }
 
@@ -36,7 +38,7 @@ export const postTransactions = async (req, res) => {
       products,
       totalAmount
     });
-    res.status(201).json(sale);
+    res.status(201).json({transaction:sale,newProductsInfo});
   } catch (error) {
     console.log(error)
     res.status(error.status).json({ message: error.message });
