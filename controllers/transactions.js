@@ -28,7 +28,7 @@ export const postTransactions = async (req, res) => {
           error.status = 401;
           throw error; // Throw the error object directly
         } else {
-        let newProductsInfo;
+        let newProductsInfo = [];
         totalAmount = productFound.price * product.unitsTaken;
         productFound.supply -= product.unitsTaken;
         productFound.save();
