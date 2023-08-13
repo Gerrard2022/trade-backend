@@ -15,7 +15,7 @@ export const postTransactions = async (req, res) => {
   const { products } = req.body;
   console.log(products)
   let totalAmount = 0;
-
+  let newProductsInfo;
   try {
     for (var product of products) {
       console.log(product);
