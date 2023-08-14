@@ -14,6 +14,7 @@ export const getTransactions = async (req, res) => {
 export const postTransactions = async (req, res) => {
   const { products } = req.body;
   const  newProductsInfo = [];
+  var transactionProducts=[]
   console.log(products)
   let totalAmount = 0;
   try {
@@ -40,15 +41,21 @@ export const postTransactions = async (req, res) => {
          error.status = 403;
          throw new Error(error);
         }else{
-          productFound.supply -= product.unitsTaken;x
+          productFound.supply -= product.unitsTaken;
         }
         productFound.save();
+        transactionProducts.push({
+          ...productFound,
+          id:productFound._id
+        })
         newProductsInfo.push(productFound);
       }
     }
 
+
     const sale = await Transaction.create({
-      products,
+      ...req.body,
+      products:transactionProducts,
       totalAmount,
     });
     res.status(201).json({transaction:sale,newProductsInfo});

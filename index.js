@@ -24,7 +24,9 @@ app.use(cors());
 /* ROUTES */
 app.use("/client", clientRoutes);
 app.use("/general", generalRoutes);
-
+app.get('/',(req,res)=>{
+  res.send('Server is running')
+})
 
 /* MONGOOSE SETUP */
 const PORT = process.env.PORT || 3000;

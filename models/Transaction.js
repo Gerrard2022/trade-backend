@@ -11,10 +11,16 @@ const TransactionSchema = new mongoose.Schema(
         },
         name: String,
         price: Number,
-        supply: Number,
+        supply: Number,        
       },
     ],
     totalAmount: Number,
+    orderedBags : Number,
+    shippedBags: Number,
+    leftBags : Number,
+    bag : Number,
+    customer : String,
+    
   },
   { timestamps: true }
 );
