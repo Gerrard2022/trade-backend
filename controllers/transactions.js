@@ -2,6 +2,27 @@ import Transaction from "../models/Transaction.js";
 import Product from "../models/Product.js";
 import mongoose from "mongoose";
 
+export const getOneTransactions = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({
+        message: "transaction doesn't exist -that is the id is invalid",
+      });
+    }
+
+    const sale = await Transaction.findById({ _id: id });
+
+    if (!sale) {
+      return res.status(404).json({ message: "Transaction doesn't exist" });
+    }
+    res.status(200).json(sale);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
 export const getTransactions = async (req, res) => {
   try {
     const sale = await Transaction.find({}).sort({ createdAt: -1 });

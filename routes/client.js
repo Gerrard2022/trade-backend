@@ -1,7 +1,7 @@
 import express from "express";
 import { getCustomers, postCustomer,deleteCustomer,updateCustomer,} from "../controllers/customer.js";
 import { postProducts, deleteProducts, updateProducts,  getProducts } from '../controllers/products.js';
-import {   getTransactions, postTransactions, deleteTransactions, updateTransactions } from '../controllers/transactions.js'
+import {  getOneTransactions,getTransactions, postTransactions, deleteTransactions, updateTransactions } from '../controllers/transactions.js'
 
 const router = express.Router();
 
@@ -20,6 +20,7 @@ router.patch('/products/:id', updateProducts);
 
 // sales or transactions
 router.get("/transactions", getTransactions);
+router.get("/transactions/:id", getOneTransactions);
 router.post("/transactions", postTransactions);
 router.delete("/transactions/:id", deleteTransactions);
 router.patch("/transactions/:id", updateTransactions);
