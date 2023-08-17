@@ -1,24 +1,65 @@
 import mongoose from "mongoose";
 
 const itemSchema = new mongoose.Schema({
-  itemNumber: String,
-  size: String,
-  location: String,
-  pairOrBag: Number,
-  factoryPrice: Number,
-  sellingPrice: Number,
-  reorderLevel: Number,
-  unitsOnHand: Number,
+  itemNumber: {
+    type: String,
+    required: true,
+  },
+  size: {
+    type: String,
+    required: true,
+  },
+  location: {
+    type: String,
+    required: true,
+  },
+  pairOrBag: {
+    type: Number,
+    required: true,
+  },
+  itemFactoryPrice: {
+    type: Number,
+    required: true,
+  },
+  itemSellingPrice: {
+    type: Number,
+    required: true,
+  },
+  itemReorderLevel: {
+    type: Number,
+    required: true,
+  },
+  unitsOnHand: {
+    type: Number,
+    required: true,
+  },
 });
 
 const stockSchema = new mongoose.Schema({
-  stockDate: Date,
-  numberOfBags: Number,
-  location: String,
-  description: String,
-  isStockIn: Boolean,
-  factoryPrice: Number,
-  sellingPrice: Number,
+  stockDate: {
+    type: String,
+    required: true
+  },
+  numberOfBags: {
+    type: Number,
+    required: true,
+  },
+  location: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  factoryPrice: {
+    type: Number,
+    required: true,
+  },
+  sellingPrice: {
+    type: Number,
+    required: true,
+  },
   items: [itemSchema], // Embedded items in the stock
 });
 
