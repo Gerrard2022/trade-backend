@@ -1,6 +1,27 @@
 import Stock from "../models/stock.js";
 import mongoose from "mongoose";
 
+export const getOneStock = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({
+        message: "transaction doesn't exist -that is the id is invalid",
+      });
+    }
+
+    const stock = await Stock.findById({ _id: id });
+
+    if (!stock) {
+      return res.status(404).json({ message: "Stock doesn't exist" });
+    }
+    res.status(200).json(stock);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
 export const getStocks = async (req, res) => {
   try {
     const stocks = await Stock.find({}).sort({ createdAt: -1 });

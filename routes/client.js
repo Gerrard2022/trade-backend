@@ -1,6 +1,6 @@
 import express from "express";
 import { getCustomers, postCustomer,deleteCustomer,updateCustomer,} from "../controllers/customer.js";
-import { postStocks, deleteStocks, updateStocks,  getStocks } from '../controllers/stocks.js';
+import { postStocks, deleteStocks, updateStocks,  getStocks, getOneStock } from '../controllers/stocks.js';
 import {  getOneTransactions,getTransactions, postTransactions, deleteTransactions, updateTransactions } from '../controllers/transactions.js'
 
 const router = express.Router();
@@ -14,6 +14,7 @@ router.patch('/customers/:id', updateCustomer);
 
 // stocks
 router.get("/stocks", getStocks);
+router.get("/stocks/:id", getOneStock);
 router.post("/stocks", postStocks);
 router.delete("/stocks/:id", deleteStocks);
 router.patch("/stocks/:id", updateStocks);
