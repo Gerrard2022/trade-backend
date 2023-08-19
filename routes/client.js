@@ -1,7 +1,7 @@
 import express from "express";
 import { getCustomers, postCustomer,deleteCustomer,updateCustomer,} from "../controllers/customer.js";
-import { postProducts, deleteProducts, updateProducts,  getProducts } from '../controllers/products.js';
-import {   getTransactions, postTransactions, deleteTransactions, updateTransactions } from '../controllers/transactions.js'
+import { postStocks, deleteStocks, updateStocks,  getStocks, getOneStock } from '../controllers/stocks.js';
+import {  getOneTransactions,getTransactions, postTransactions, deleteTransactions, updateTransactions } from '../controllers/transactions.js'
 
 const router = express.Router();
 
@@ -12,14 +12,16 @@ router.post('/customers', postCustomer);
 router.delete('/customers/:id', deleteCustomer);
 router.patch('/customers/:id', updateCustomer);
 
-// product
-router.get("/products", getProducts);
-router.post('/products', postProducts);
-router.delete('/products/:id', deleteProducts);
-router.patch('/products/:id', updateProducts);
+// stocks
+router.get("/stocks", getStocks);
+router.get("/stocks/:id", getOneStock);
+router.post("/stocks", postStocks);
+router.delete("/stocks/:id", deleteStocks);
+router.patch("/stocks/:id", updateStocks);
 
 // sales or transactions
 router.get("/transactions", getTransactions);
+router.get("/transactions/:id", getOneTransactions);
 router.post("/transactions", postTransactions);
 router.delete("/transactions/:id", deleteTransactions);
 router.patch("/transactions/:id", updateTransactions);

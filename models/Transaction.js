@@ -19,6 +19,10 @@ const TransactionSchema = new mongoose.Schema(
     shippedBags: String,
     leftBags : String,
     bag : String,
+    balance: String,
+    paid: String,
+    topay: String,
+    method: String,
     customer : String,
     
   },

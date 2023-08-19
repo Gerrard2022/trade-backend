@@ -1,6 +1,27 @@
 import Transaction from "../models/Transaction.js";
-import Product from "../models/Product.js";
+import Stock from "../models/stock.js";
 import mongoose from "mongoose";
+
+export const getOneTransactions = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({
+        message: "transaction doesn't exist -that is the id is invalid",
+      });
+    }
+
+    const sale = await Transaction.findById({ _id: id });
+
+    if (!sale) {
+      return res.status(404).json({ message: "Transaction doesn't exist" });
+    }
+    res.status(200).json(sale);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
 
 export const getTransactions = async (req, res) => {
   try {
@@ -13,51 +34,59 @@ export const getTransactions = async (req, res) => {
 
 export const postTransactions = async (req, res) => {
   const { products } = req.body;
-  const  newProductsInfo = [];
-  console.log(products)
+  const newProductsInfo = [];
+  var transactionProducts = [];
+  console.log(products);
   let totalAmount = 0;
   try {
     for (var product of products) {
       console.log(product);
-      let productFound = await Product.findById(product.id);
+      let productFound = await Stock.findById(product.id);
       console.log("productFound", productFound);
-      
+
       if (!productFound) {
         var error = new Error(
           `Product selected with id ${product.id} does not exist!`
+        );
+        error.status = 403;
+        throw error; // Throw the error object directly
+      } else {
+        totalAmount = productFound.price * product.unitsTaken;
+        if (productFound.supply == 0) {
+          error = new Error("There is no product supply left in the stock");
+          error.status = 403;
+          throw new Error(error);
+        }
+        if (productFound.supply < product.unitsTaken) {
+          error = new Error(
+            "The units wanted are more than what is in stock, reduce the units"
           );
           error.status = 403;
-          throw error; // Throw the error object directly
+          throw new Error(error);
         } else {
         totalAmount = productFound.price * product.unitsTaken;
-        if(productFound.supply == 0){
-        error = new Error('There is no product supply left in the stock');
-        error.status = 403;
-        throw new Error(error);
-        } 
-        if(productFound.supply < product.unitsTaken){
-         error  = new Error('The units wanted are more than what is in stock, reduce the units')
-         error.status = 403;
-         throw new Error(error);
-        }else{
-          productFound.supply -= product.unitsTaken;x
+        productFound.supply -= product.unitsTaken;
         }
         productFound.save();
+        transactionProducts.push({
+          ...productFound,
+          id: productFound._id,
+        });
         newProductsInfo.push(productFound);
       }
     }
 
     const sale = await Transaction.create({
-      products,
+      ...req.body,
+      products: transactionProducts,
       totalAmount,
     });
-    res.status(201).json({transaction:sale,newProductsInfo});
+    res.status(201).json({ transaction: sale, newProductsInfo });
   } catch (error) {
     console.error(error);
     res.status(error.status || 500).json({ message: error.message });
   }
 };
-
 
 export const deleteTransactions = async (req, res) => {
   try {
