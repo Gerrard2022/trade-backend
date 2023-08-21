@@ -33,7 +33,7 @@ const itemSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-});
+}); 
 
 const stockSchema = new mongoose.Schema({
   stockDate: {

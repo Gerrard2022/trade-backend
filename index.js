@@ -8,6 +8,9 @@ import morgan from "morgan";
 
 import clientRoutes from "./routes/client.js";
 import generalRoutes from "./routes/general.js";
+//const cloudinary = require("./cloudinary.js");
+
+
 
 
 /* CONFIGURATION */

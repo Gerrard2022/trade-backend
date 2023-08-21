@@ -25,7 +25,7 @@ export const getOneStock = async (req, res) => {
 export const getStocks = async (req, res) => {
   try {
     const stocks = await Stock.find({}).sort({ createdAt: -1 });
-    console.log(stocks);
+    
     res.status(200).json(stocks);
   } catch (error) {
     res.status(404).json({ message: error.message });

@@ -2,19 +2,7 @@ import mongoose from "mongoose";
 
 const TransactionSchema = new mongoose.Schema(
   {
-    products: [
-      {
-        id: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'Product', // Reference the 'Product' model
-          required: true,
-        },
-        name: String,
-        price: String,
-        supply: String,        
-      },
-    ],
-    totalAmount: String,
+    itemNumber: String,
     orderedBags : String,
     shippedBags: String,
     leftBags : String,

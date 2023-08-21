@@ -33,54 +33,65 @@ export const getTransactions = async (req, res) => {
 };
 
 export const postTransactions = async (req, res) => {
-  const { products } = req.body;
+  const {
+    id,
+    customer,
+    balance,
+    topay,
+    paid,
+    method,
+    orderedBags,
+    shippedBags,
+  } = req.body;
   const newProductsInfo = [];
   var transactionProducts = [];
-  console.log(products);
+ // console.log(products);
+ const stocks = await Stock.find({})
   let totalAmount = 0;
+  var foundItem;
+  console.log("Item id",id);
   try {
-    for (var product of products) {
-      console.log(product);
-      let productFound = await Stock.findById(product.id);
-      console.log("productFound", productFound);
+    for (var stock of stocks) {
+      foundItem = stock.items.find(item => item._id === id);
+      console.log("The item found", foundItem);
 
-      if (!productFound) {
+      if (!foundItem) {
         var error = new Error(
-          `Product selected with id ${product.id} does not exist!`
+          `Product selected with id does not exist!`
         );
         error.status = 403;
         throw error; // Throw the error object directly
       } else {
-        totalAmount = productFound.price * product.unitsTaken;
-        if (productFound.supply == 0) {
+        //totalAmount = productFound.price * product.unitsTaken;
+        if (foundItem.unitsOnHand == 0) {
           error = new Error("There is no product supply left in the stock");
           error.status = 403;
           throw new Error(error);
         }
-        if (productFound.supply < product.unitsTaken) {
+        if (foundItem.unitsOnHand < orderedBags) {
           error = new Error(
             "The units wanted are more than what is in stock, reduce the units"
           );
           error.status = 403;
           throw new Error(error);
         } else {
-          productFound.supply -= product.unitsTaken;
+          foundItem.unitsOnHand -= orderedBags;
         }
-        productFound.save();
-        transactionProducts.push({
-          ...productFound,
-          id: productFound._id,
-        });
-        newProductsInfo.push(productFound);
+        // productFound.save();
+        // transactionProducts.push({
+        //   ...productFound,
+        //   id: productFound._id,
+        // });
+        // newProductsInfo.push(productFound);
       }
     }
 
-    const sale = await Transaction.create({
-      ...req.body,
-      products: transactionProducts,
-      totalAmount,
-    });
-    res.status(201).json({ transaction: sale, newProductsInfo });
+    // const sale = await Transaction.create({
+    //   ...req.body,
+    //   products: transactionProducts,
+    //   totalAmount,
+    // });
+    // res.status(201).json({ transaction: sale, newProductsInfo });
   } catch (error) {
     console.error(error);
     res.status(error.status || 500).json({ message: error.message });
