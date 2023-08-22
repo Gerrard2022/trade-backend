@@ -49,11 +49,20 @@ export const postTransactions = async (req, res) => {
   const stocks = await Stock.find({});
   let totalAmount = 0;
   var foundItem;
-  console.log("Item id", id);
+
+  const ID = id.toString();
+ 
   try {
-    for (var stock of stocks) {
-      foundItem = stock.items.find((item) => item._id === id);
-      console.log("The item found", foundItem);
+      for (var stock of stocks) {
+        console.log("Checking stock with size:", stock.items[0].pairOrBag);
+        foundItem = stock.items.find((item) => item._id === ID);
+        console.log("Item ID:", ID);
+        console.log(
+          "The item found in stock:",
+          foundItem ? foundItem._id : "Not found"
+        );
+        console.log("The item found:", foundItem);
+      }
 
       if (!foundItem) {
         var error = new Error(`Product selected with id does not exist!`);
@@ -82,7 +91,7 @@ export const postTransactions = async (req, res) => {
         // });
         // newProductsInfo.push(productFound);
       }
-    }
+   
 
     // const sale = await Transaction.create({
     //   ...req.body,
